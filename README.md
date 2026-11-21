@@ -1,6 +1,6 @@
 # FinanceFlow
 
-FinanceFlow is a personal finance dashboard for keeping track of income and expenses in Canadian dollars. It is a first-year frontend portfolio project built with HTML, CSS, and vanilla JavaScript.
+FinanceFlow is a personal finance dashboard for keeping track of income and expenses in Canadian dollars. It is a first-year frontend portfolio project built with HTML, CSS, and JavaScript.
 
 ## Features
 
