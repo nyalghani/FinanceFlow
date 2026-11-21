@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Track income, expenses, and category spending with FinanceFlow.">
+  <meta name="theme-color" content="#17243b">
+  <title>FinanceFlow | Personal Finance Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to dashboard</a>
+
+  <aside class="sidebar">
+    <a class="brand" href="#overview">
+      <span class="brand-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+      FinanceFlow
+    </a>
+    <nav class="navigation" aria-label="Dashboard sections">
+      <a href="#overview" aria-current="location"><span class="icon icon-grid" aria-hidden="true"></span>Overview</a>
+      <a href="#transactions"><span class="icon icon-list" aria-hidden="true"></span>Transactions</a>
+      <a href="#spending"><span class="icon icon-chart" aria-hidden="true"></span>Spending</a>
+    </nav>
+    <div class="sidebar-footer">
+      <span class="icon icon-lock" aria-hidden="true"></span>
+      <p id="storage-note">Saved in this browser</p>
+    </div>
+  </aside>
+
+  <div class="workspace">
+    <header class="topbar">
+      <p>Personal dashboard</p>
+      <span class="currency"><span aria-hidden="true">$</span> CAD</span>
+    </header>
+
+    <main id="main">
+      <noscript>Enable JavaScript to add transactions and calculate totals.</noscript>
+      <section id="overview" aria-labelledby="overview-heading">
+        <div class="overview-heading">
+          <div>
+            <h1 id="overview-heading">Financial overview</h1>
+            <p>All-time totals across your transactions.</p>
+          </div>
+          <div class="sample-notice" id="sample-notice" hidden>
+            <span>Sample data</span>
+            <button type="button" id="clear-sample">Start fresh</button>
+          </div>
+        </div>
+
+        <div class="summary-grid">
+          <article class="summary-card balance-card">
+            <div class="summary-heading">
+              <h2>Total balance</h2>
+              <span class="summary-icon" aria-hidden="true"><span class="icon icon-wallet"></span></span>
+            </div>
+            <p class="summary-value" id="total-balance">$0.00</p>
+            <p class="summary-note">Income minus expenses</p>
+          </article>
+
+          <article class="summary-card">
+            <div class="summary-heading">
+              <h2>Total income</h2>
+              <span class="summary-icon income-icon" aria-hidden="true">↗</span>
+            </div>
+            <p class="summary-value" id="total-income">$0.00</p>
+            <p class="summary-note" id="income-count">0 income transactions</p>
+          </article>
+
+          <article class="summary-card">
+            <div class="summary-heading">
+              <h2>Total expenses</h2>
+              <span class="summary-icon expense-icon" aria-hidden="true">↘</span>
+            </div>
+            <p class="summary-value" id="total-expenses">$0.00</p>
+            <p class="summary-note" id="expense-count">0 expense transactions</p>
+          </article>
+        </div>
+      </section>
+
+      <div class="transaction-grid" id="transactions">
+        <section class="panel form-panel" aria-labelledby="form-heading">
+          <h2 id="form-heading">Add a transaction</h2>
+          <form id="transaction-form" novalidate>
+            <div class="field">
+              <label for="transaction-name">Transaction name</label>
+              <input id="transaction-name" type="text" placeholder="e.g. Weekly groceries" maxlength="100" required>
+            </div>
+            <div class="field">
+              <label for="transaction-amount">Amount <span class="field-note">(CAD)</span></label>
+              <div class="amount-field">
+                <span aria-hidden="true">$</span>
+                <input id="transaction-amount" type="number" placeholder="0.00" min="0.01" step="0.01" inputmode="decimal" required>
+              </div>
+            </div>
+            <fieldset class="field">
+              <legend>Type</legend>
+              <div class="type-options">
+                <label>
+                  <input type="radio" name="type" value="expense" checked>
+                  <span><span class="type-arrow" aria-hidden="true">↘</span> Expense</span>
+                </label>
+                <label>
+                  <input type="radio" name="type" value="income">
+                  <span><span class="type-arrow" aria-hidden="true">↗</span> Income</span>
+                </label>
+              </div>
+            </fieldset>
+            <div class="field">
+              <label for="transaction-category">Category</label>
+              <select id="transaction-category" required>
+                <option value="" disabled selected>Select a category</option>
+                <option>Food</option>
+                <option>Shopping</option>
+                <option>Transportation</option>
+                <option>Entertainment</option>
+                <option>Salary</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <p id="form-error" class="form-error" role="alert"></p>
+            <button class="primary-button" type="submit"><span aria-hidden="true">+</span> Add transaction</button>
+          </form>
+        </section>
+
+        <section class="panel history-panel" aria-labelledby="history-heading">
+          <div class="panel-heading history-heading">
+            <div>
+              <h2 id="history-heading">Transaction history</h2>
+              <p id="history-count">0 transactions</p>
+            </div>
+            <label class="sr-only" for="transaction-filter">Filter transactions</label>
+            <select id="transaction-filter">
+              <option value="all">All transactions</option>
+              <option value="income">Income only</option>
+              <option value="expense">Expenses only</option>
+            </select>
+          </div>
+          <div class="history-columns" id="history-columns" aria-hidden="true">
+            <span>Transaction</span>
+            <span>Date</span>
+            <span>Amount</span>
+            <span></span>
+          </div>
+          <ul class="history-list" id="transaction-list" aria-label="Transactions"></ul>
+          <div class="empty-state" id="history-empty">
+            <span class="empty-icon icon icon-list" aria-hidden="true"></span>
+            <p id="history-empty-title">No transactions yet</p>
+            <p id="history-empty-detail">Add a transaction to get started.</p>
+          </div>
+        </section>
+      </div>
+
+      <section class="panel spending-panel" id="spending" aria-labelledby="spending-heading">
+        <div class="panel-heading">
+          <div>
+            <h2 id="spending-heading">Spending breakdown</h2>
+            <p>Share of total expenses by category</p>
+          </div>
+        </div>
+        <ul class="spending-list" id="spending-list" aria-label="Expenses by category"></ul>
+        <p class="spending-empty" id="spending-empty">Add an expense to see where your money goes.</p>
+      </section>
+
+      <p class="sr-only" id="action-status" role="status"></p>
+    </main>
+  </div>
+
+  <!-- Templates keep the structure of repeated items in HTML. -->
+  <template id="transaction-template">
+    <li class="transaction-row">
+      <div class="transaction-label">
+        <span class="category-icon" aria-hidden="true"></span>
+        <div>
+          <p class="transaction-name"></p>
+          <p class="transaction-category"></p>
+        </div>
+      </div>
+      <time class="transaction-date"></time>
+      <p class="transaction-value">
+        <span class="transaction-amount"></span>
+        <span class="sr-only transaction-type"></span>
+      </p>
+      <button class="delete-button" type="button">
+        <span class="icon icon-trash" aria-hidden="true"></span>
+      </button>
+    </li>
+  </template>
+
+  <template id="spending-template">
+    <li class="spending-item">
+      <div class="spending-label">
+        <span class="spending-category"></span>
+        <span class="spending-amount"></span>
+      </div>
+      <progress class="spending-bar" max="100"></progress>
+    </li>
+  </template>
+</body>
+</html>
